@@ -1,36 +1,26 @@
 def printGameBoard(board):
     for i in board:
-        print(end='          ')
+        print(end='              ')
         for j in i:
             print(j, end='')
         print()
 
 
 def getLocation(userInput):
-    if userInput == 1:
-        return 0, 0
-    elif userInput == 2:
-        return 0, 2
-    elif userInput == 3:
-        return 0, 4
-    elif userInput == 4:
-        return 2, 0
-    elif userInput == 5:
-        return 2, 2
-    elif userInput == 6:
-        return 2, 4
-    elif userInput == 7:
-        return 4, 0
-    elif userInput == 8:
-        return 4, 2
-    elif userInput == 9:
-        return 4, 4
+    userInput -= 1
+    locationList = [(0, 0),
+                    (0, 2),
+                    (0, 4),
+                    (2, 0),
+                    (2, 2),
+                    (2, 4),
+                    (4, 0),
+                    (4, 2),
+                    (4, 4)]
+    return locationList[userInput]
 
 
-# def getSymbol()
-
-def checkGame(board, location):
-
+def checkGame(board, location, whoTurn):
     if location in (1, 2, 3):
         if board[0][0] == whoTurn and board[0][2] == whoTurn and board[0][4] == whoTurn:
             return whoTurn
@@ -97,7 +87,7 @@ playAgain = 'y'
 
 while playAgain == 'y':
 
-    print("  Welcome to My Tic Tac Toe Game!\n")
+    print("   Welcome to My Tic Tac Toe Game!\n")
 
     gameBoard = [[' ', '|', ' ', '|', ' '],
                  ['-', '+', '-', '+', '-'],
@@ -109,40 +99,41 @@ while playAgain == 'y':
     print()
 
     count = 9
-    whoTurn = 'X'
+    turn = 'X'
     while count != 0:
 
         if count % 2 != 0:
             symbol = 'X'
-            whoTurn = 'X'
+            turn = 'X'
         else:
             symbol = 'O'
-            whoTurn = 'O'
+            turn = 'O'
 
-        position = int(input('   "' + whoTurn + '" enter your placement (1-9): '))
+        position = int(input('   "' + turn + '" enter your placement (1-9): '))
         print()
         x, y = getLocation(position)
 
         while gameBoard[x][y] == 'X' or gameBoard[x][y] == 'O':
             print('  Spot Already Placed! Reenter a new placement.')
             print()
-            position = int(input('   "' + whoTurn + '" enter your placement (1-9): '))
+            position = int(input('   "' + turn + '" enter your placement (1-9): '))
             x, y = getLocation(position)
 
         gameBoard[x][y] = symbol
         printGameBoard(gameBoard)
 
         if count < 6:
-            result = checkGame(gameBoard, position)
+            result = checkGame(gameBoard, position, turn)
             if result != '':
-                print('      ' + result + ' win!')
+                print('\n   --------- "' + result + '" WIN! -----------')
                 break
-        print()
 
         count -= 1
+
+    print()
 
     if count == 0:
         print('      Tie\n')
 
-    playAgain = input('  Do want play again (y/n)? ')
+    playAgain = input('  Do you want to play again (y/n)? ')
     print()
